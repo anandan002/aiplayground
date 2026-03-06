@@ -99,15 +99,6 @@ npm run dev
 
 Open **http://localhost:5005** in your browser.
 
-## Default Login
-
-| Field | Value |
-|-------|-------|
-| Email | `admin@aiplayground.dev` |
-| Password | `ChangeMe123!` |
-
-Change the admin email via the Admin > Users panel after first login.
-
 ## Available Scripts
 
 | Command | Description |
