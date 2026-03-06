@@ -1,0 +1,100 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String         @id @default(cuid())
+  email        String         @unique
+  name         String
+  passwordHash String
+  role         String         @default("MEMBER")
+  isActive     Boolean        @default(true)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  progress     UserProgress[]
+  forumThreads ForumThread[]
+  forumPosts   ForumPost[]
+  postUpvotes  PostUpvote[]
+}
+
+model Module {
+  id              String           @id @default(cuid())
+  slug            String           @unique
+  title           String
+  description     String
+  order           Int
+  contentFilePath String
+
+  resources    ModuleResource[]
+  progress     UserProgress[]
+  forumThreads ForumThread[]
+}
+
+model ModuleResource {
+  id       String @id @default(cuid())
+  moduleId String
+  type     String @default("LINK")
+  title    String
+  url      String
+  order    Int
+
+  module Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+}
+
+model UserProgress {
+  userId      String
+  moduleId    String
+  completed   Boolean   @default(false)
+  completedAt DateTime?
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  module Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  @@id([userId, moduleId])
+}
+
+model ForumThread {
+  id        String   @id @default(cuid())
+  moduleId  String?
+  title     String
+  userId    String
+  pinned    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  module Module?     @relation(fields: [moduleId], references: [id], onDelete: SetNull)
+  user   User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  posts  ForumPost[]
+}
+
+model ForumPost {
+  id        String   @id @default(cuid())
+  threadId  String
+  userId    String
+  content   String
+  parentId  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  thread  ForumThread  @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  user    User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parent  ForumPost?   @relation("PostReplies", fields: [parentId], references: [id])
+  replies ForumPost[]  @relation("PostReplies")
+  upvotes PostUpvote[]
+}
+
+model PostUpvote {
+  userId String
+  postId String
+
+  user User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post ForumPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@id([userId, postId])
+}
