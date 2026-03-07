@@ -74,6 +74,62 @@ const modules = [
     order: 10,
     contentFilePath: "content/modules/10-secure-code-generation.md",
   },
+  {
+    slug: "ai-dev-best-practices",
+    title: "AI-Assisted Dev Best Practices & Governance",
+    description: "Trust gradient, governance frameworks, legal considerations, metrics, rollout plans, and anti-patterns for AI-assisted development.",
+    order: 11,
+    contentFilePath: "content/modules/11-ai-dev-best-practices.md",
+  },
+  {
+    slug: "ai-boundary-enforcement",
+    title: "AI Boundary Enforcement",
+    description: "CODEOWNERS integration, path guards, agent sandboxing, and cross-team protocols for enforcing AI boundaries.",
+    order: 12,
+    contentFilePath: "content/modules/12-ai-boundary-enforcement.md",
+  },
+  {
+    slug: "ai-development-lifecycle",
+    title: "AI-Enabled Development Lifecycle",
+    description: "The 7-phase AI development lifecycle from analysis to deployment, with quality gates and plan validation.",
+    order: 13,
+    contentFilePath: "content/modules/13-ai-development-lifecycle.md",
+  },
+  {
+    slug: "ai-hybrid-workflow",
+    title: "AI + Manual Hybrid Workflow",
+    description: "Sprint ceremonies, story decomposition, and daily workflow patterns for teams combining AI and manual development.",
+    order: 14,
+    contentFilePath: "content/modules/14-ai-hybrid-workflow.md",
+  },
+  {
+    slug: "git-multi-user-playbook",
+    title: "Git Multi-User Playbook",
+    description: "Branching models, merge queues, bot governance, and monorepo strategies for multi-user AI-assisted Git workflows.",
+    order: 15,
+    contentFilePath: "content/modules/15-git-multi-user-playbook.md",
+  },
+  {
+    slug: "htc-ai-dev-pov",
+    title: "HTC AI-Assisted Development POV",
+    description: "HTC's strategic framework for safe, scalable AI-enabled software engineering including Trust Gradient, 5 principles, and scaling roadmap.",
+    order: 16,
+    contentFilePath: "content/modules/16-htc-ai-dev-pov.md",
+  },
+  {
+    slug: "claude-code-project-setup",
+    title: "Setting Up Claude Code for Your Project",
+    description: "Step-by-step guide to configuring CLAUDE.md, custom commands, hooks, MCP servers, and team conventions.",
+    order: 17,
+    contentFilePath: "content/modules/17-claude-code-project-setup.md",
+  },
+  {
+    slug: "claude-cowork-and-agent-teams",
+    title: "Claude Cowork & Agent Teams",
+    description: "Claude Cowork for desktop knowledge work (scheduled tasks, plugins, file management) and Claude Code Agent Teams for multi-agent parallel development.",
+    order: 18,
+    contentFilePath: "content/modules/18-claude-cowork-and-agent-teams.md",
+  },
 ]
 
 async function main() {
@@ -100,7 +156,7 @@ async function main() {
     })
   }
 
-  console.log("Seed completed: admin user + 10 modules")
+  console.log(`Seed completed: admin user + ${modules.length} modules`)
 }
 
 main()
