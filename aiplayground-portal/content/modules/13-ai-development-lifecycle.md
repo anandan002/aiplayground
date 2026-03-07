@@ -1,23 +1,21 @@
 # AI-Enabled Development Lifecycle
 
-> A comprehensive operational framework for human-AI collaborative software development.
-> Synthesizes the **GOTCHA Framework** (system structure) with the **SuperClaude Bharath Persona** (behavioral model) into a unified lifecycle.
+> A practical operational framework for human-AI collaborative software development. Defines the phases, quality gates, and protocols that keep AI-assisted work reliable, maintainable, and high-quality.
 
 ---
 
 ## Table of Contents
 
 1. [Philosophy](#1-philosophy)
-2. [The GOTCHA Framework](#2-the-gotcha-framework)
-3. [The Development Lifecycle](#3-the-development-lifecycle)
-4. [Phase Details](#4-phase-details)
-5. [System Architecture](#5-system-architecture)
+2. [The Development Lifecycle](#2-the-development-lifecycle)
+3. [Phase Details](#3-phase-details)
+4. [Separating AI from Deterministic Work](#4-separating-ai-from-deterministic-work)
+5. [Quality Gates](#5-quality-gates)
 6. [Operational Protocols](#6-operational-protocols)
-7. [Quality Gates](#7-quality-gates)
-8. [Memory & Learning](#8-memory--learning)
+7. [Plan Validation](#7-plan-validation)
+8. [Memory and Learning](#8-memory-and-learning)
 9. [Failure Recovery](#9-failure-recovery)
-10. [File Structure](#10-file-structure)
-11. [Quick Reference](#11-quick-reference)
+10. [Quick Reference](#10-quick-reference)
 
 ---
 
@@ -25,131 +23,46 @@
 
 ### The Core Problem
 
-LLMs are probabilistic. Business logic is deterministic. When AI tries to do everything itself, errors compound fast — 90% accuracy per step is ~59% accuracy over 5 steps.
+LLMs are probabilistic. Business logic is deterministic. When AI tries to do everything itself, errors compound fast -- 90% accuracy per step is ~59% accuracy over 5 steps.
 
 ### The Solution: Separation of Concerns
 
 | Responsibility | Owner | Why |
 |---|---|---|
-| **Smart decisions** | AI (Orchestrator) | Reasoning, judgment, creativity |
-| **Perfect execution** | Deterministic tools | Reliability, repeatability, speed |
-| **Process clarity** | Goals | What to achieve, not how to behave |
-| **Behavior settings** | Args | Shape how the system acts right now |
-| **Domain knowledge** | Context | Reference material for reasoning |
-| **Quality enforcement** | Human (Approval Gates) | Trust but verify |
+| **Reasoning and judgment** | AI assistant | Creativity, analysis, natural language understanding |
+| **Reliable execution** | Scripts, tools, CI/CD | Repeatability, speed, deterministic outcomes |
+| **Quality enforcement** | Human reviewer | Trust but verify -- AI proposes, humans approve |
+| **Domain knowledge** | Documentation, context files | Shapes AI reasoning without re-explaining every session |
+| **Process definition** | Team conventions | What to achieve and how, documented in project files |
 
-### The Bharath Principle
+### The Guiding Principle
 
-> *"Technology alone is not enough. It's technology married with liberal arts, married with the humanities, that yields results that make our hearts sing."*
+> Every line of code should be clear, maintainable, and correct. The first solution that works is rarely good enough -- refine until it is right.
 
-Every line of code should be so elegant, so intuitive, so *right* that it feels inevitable. The first solution that works is never good enough.
-
-**Priority Hierarchy**: Elegance > System Integrity > Maintainability > Testing > Documentation > Speed
+**Priority Hierarchy**: Correctness > Maintainability > Simplicity > Performance > Speed of delivery
 
 ---
 
-## 2. The GOTCHA Framework
-
-A 6-layer architecture for agentic systems. The acronym maps the full stack:
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    GOTCHA FRAMEWORK                          │
-├─────────────────────────────────────────────────────────────┤
-│                                                              │
-│  GOT (The Engine):                                          │
-│  ─────────────────                                          │
-│  G  Goals          Process definitions (what to achieve)    │
-│  O  Orchestration  AI manager (reasoning + coordination)    │
-│  T  Tools          Deterministic scripts (perfect execution)│
-│                                                              │
-│  CHA (The Context):                                         │
-│  ──────────────────                                         │
-│  C  Context        Domain knowledge & reference material    │
-│  H  Hard Prompts   Reusable instruction templates           │
-│  A  Args           Behavior settings & configuration        │
-│                                                              │
-└─────────────────────────────────────────────────────────────┘
-```
-
-### Layer Responsibilities
-
-#### G — Goals (`goals/`)
-- Task-specific instructions in clear markdown
-- Each goal defines: objective, inputs, which tools to use, expected outputs, edge cases
-- Written like briefing someone competent
-- Only modified with explicit permission
-- Goals are living documentation — updated when better approaches emerge
-
-#### O — Orchestration (AI Manager)
-- Reads the relevant goal
-- Decides which tools to call and in what order
-- Applies args settings to shape behavior
-- References context for domain knowledge
-- Handles errors, asks clarifying questions, makes judgment calls
-- **Never executes work directly — delegates intelligently**
-
-#### T — Tools (`tools/`)
-- Scripts organized by workflow, each with **one job**
-- Fast, documented, testable, deterministic
-- They don't think. They don't decide. They execute.
-- All tools listed in `tools/manifest.md` with a one-sentence description
-
-#### C — Context (`context/`)
-- Static reference material the system uses to reason
-- Code analysis artifacts, architecture decisions, session state
-- Shapes quality and reasoning — not process or behavior
-
-#### H — Hard Prompts (`hardprompts/`)
-- Reusable text templates for LLM sub-tasks
-- Fixed instructions for common operations (code review, migration analysis, etc.)
-- Not context, not goals — pure instruction templates
-
-#### A — Args (`args/`)
-- YAML/JSON files controlling current behavior
-- Changing args changes behavior without editing goals or tools
-- The orchestrator reads args before running any workflow
-
----
-
-## 3. The Development Lifecycle
+## 2. The Development Lifecycle
 
 ### The 7-Phase Cycle
 
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│                 AI-ENABLED DEVELOPMENT LIFECYCLE                     │
-├─────────────────────────────────────────────────────────────────────┤
-│                                                                      │
-│  Phase 1    Phase 2    Phase 3    Phase 4    Phase 5    Phase 6     │
-│  ANALYZE    DESIGN     VALIDATE   IMPLEMENT  TEST       ITERATE    │
-│    │          │          │          │          │          │          │
-│    ▼          ▼          ▼          ▼          ▼          ▼          │
-│  Understand  Architect  SRC Loop   Craft      Verify     Refine    │
-│  the problem the        ≥95%       the        quality    until      │
-│  deeply      solution   converge   solution   gates      great     │
-│    │          │          │          │          │          │          │
-│    ▼          ▼          ▼          ▼          ▼          ▼          │
-│  [GATE]    [GATE]     [GATE]    [GATE]     [GATE]    [GATE]       │
-│  Approve   Approve    Approve   Review     All pass   Approve     │
-│  analysis  design     plan      code       tests      release     │
-│                                                                      │
-│                              Phase 7                                │
-│                              COMMIT                                 │
-│                                │                                    │
-│                                ▼                                    │
-│                            Version &                                │
-│                            document                                 │
-│                                │                                    │
-│                                ▼                                    │
-│                            [GATE]                                   │
-│                            Approve                                  │
-│                            commit                                   │
-│                                                                      │
-│  ◄──────────── LEARNING LOOP ──────────────────────────────────►   │
-│  Every failure strengthens the system. Update goals, fix tools.    │
-│                                                                      │
-└─────────────────────────────────────────────────────────────────────┘
+Phase 1    Phase 2    Phase 3    Phase 4    Phase 5    Phase 6    Phase 7
+ANALYZE    DESIGN     VALIDATE   IMPLEMENT  TEST       ITERATE    COMMIT
+  |          |          |          |          |          |          |
+  v          v          v          v          v          v          v
+Understand  Architect  Check the  Craft      Verify     Refine     Version
+the problem the        plan for   the        quality    until      and
+deeply      solution   gaps       solution   gates      great      document
+  |          |          |          |          |          |          |
+  v          v          v          v          v          v          v
+[GATE]     [GATE]     [GATE]    [GATE]     [GATE]    [GATE]     [GATE]
+Approve    Approve    Approve   Review     All pass   Approve    Approve
+analysis   design     plan      code       tests      release    commit
+
+<------------ LEARNING LOOP ------------------------------------>
+Every failure strengthens the process. Update docs, fix tools.
 ```
 
 ### Phase Summary
@@ -158,54 +71,67 @@ A 6-layer architecture for agentic systems. The acronym maps the full stack:
 |-------|--------|---------|------------|------|
 | 1. Analyze | Understand problem deeply | Read, investigate, gather evidence | Confirm problem statement | Approve analysis |
 | 2. Design | Architect the solution | Present module design, interfaces | Review architecture | Approve design |
-| 3. Validate | SRC loop on the plan | Run structural + semantic checks | Review convergence report | Approve plan |
-| 4. Implement | Craft the code | Write elegant, tested code | Monitor progress | Review implementation |
+| 3. Validate | Check plan for completeness | Run structural + semantic checks | Review the plan | Approve plan |
+| 4. Implement | Build the solution | Write code, follow existing patterns | Monitor progress | Review implementation |
 | 5. Test | Verify quality gates | Run tests, capture evidence | Review results | All gates pass |
-| 6. Iterate | Refine until great | Compare, measure, improve | Judge "good enough" | Approve release |
+| 6. Iterate | Refine until right | Compare, measure, improve | Judge "good enough" | Approve release |
 | 7. Commit | Version and document | Prepare commit, update docs | Final review | Approve commit |
+
+### When to Use the Full Lifecycle
+
+Not every task needs all 7 phases:
+
+| Task Type | Phases to Use |
+|-----------|--------------|
+| Simple bug fix (clear root cause) | 1 (brief) → 4 → 5 → 7 |
+| Medium feature (well-understood) | 1 → 2 → 4 → 5 → 7 |
+| Complex feature (architectural decisions) | All 7 phases |
+| Large refactor (many files, high risk) | All 7 phases |
+| Documentation-only change | 4 → 7 |
+| Dependency update | 1 (risk assessment) → 4 → 5 → 7 |
 
 ---
 
-## 4. Phase Details
+## 3. Phase Details
 
 ### Phase 1: Analyze
 
 **Objective**: Understand the problem so deeply that the solution becomes obvious.
 
-**For Bug Fixes (RCA Required)**:
+**For Bug Fixes (Root Cause Analysis)**:
 ```
 Root Cause Analysis
-├── Problem: [What is actually happening — be specific]
-├── Symptoms: [What the user reported/observed]
-├── Root Cause: [WHY this is happening — dig deep]
-├── Evidence: [Code snippets, logs, traces that prove it]
-├── Proposed Fix
-│   ├── Files to Change: [file:line — what change]
-│   ├── Why This Fixes It: [How this addresses ROOT cause]
-│   └── Risk Assessment
-│       ├── Could break: [what might fail]
-│       ├── Side effects: [ripple effects]
-│       └── Test coverage: [is this tested?]
-└── Approval: Proceed? (yes/no/discuss)
++-- Problem: [What is actually happening -- be specific]
++-- Symptoms: [What the user reported/observed]
++-- Root Cause: [WHY this is happening -- dig deep]
++-- Evidence: [Code snippets, logs, traces that prove it]
++-- Proposed Fix
+|   +-- Files to Change: [file:line -- what change]
+|   +-- Why This Fixes It: [How this addresses ROOT cause]
+|   +-- Risk Assessment
+|       +-- Could break: [what might fail]
+|       +-- Side effects: [ripple effects]
+|       +-- Test coverage: [is this tested?]
++-- Approval: Proceed? (yes/no/discuss)
 ```
 
-**For New Features (Discovery Required)**:
+**For New Features (Discovery)**:
 ```
 Feature Analysis
-├── What: [Single sentence description]
-├── Why: [Business/user need]
-├── Who: [Who uses this]
-├── Where: [Which modules/layers are affected]
-├── Existing Patterns: [How similar things work in the codebase]
-├── Dependencies: [What this needs, what depends on it]
-└── Risks: [What could go wrong]
++-- What: [Single sentence description]
++-- Why: [Business/user need]
++-- Who: [Who uses this]
++-- Where: [Which modules/layers are affected]
++-- Existing Patterns: [How similar things work in the codebase]
++-- Dependencies: [What this needs, what depends on it]
++-- Risks: [What could go wrong]
 ```
 
-**GOTCHA Integration**:
-- Check `goals/manifest.md` for existing relevant workflows
-- Check `tools/manifest.md` for existing relevant tools
-- Load `context/` for domain knowledge
-- Read `args/` for current behavior settings
+**What AI should do in this phase**:
+- Read relevant source files to understand current behavior
+- Search for existing patterns that apply
+- Check project documentation (CLAUDE.md, README, architecture docs)
+- Present findings with evidence, not assumptions
 
 **Gate**: Human approves the analysis before proceeding.
 
@@ -215,7 +141,7 @@ Feature Analysis
 
 **Objective**: Create an architecture so clear that anyone could understand it.
 
-**For Every New Module**:
+**For Every New Module or Component**:
 ```
 Module Design: [name]
 
@@ -232,69 +158,58 @@ Approve this design? (yes/no)
 ```
 
 **Design Principles**:
-- Single Responsibility — each function does ONE thing
-- Clear naming — code reads like prose
-- Error handling — graceful failures, meaningful messages
-- Type safety — full typing, no `any` unless justified
-- Loose coupling — minimize dependencies between components
-
-**GOTCHA Integration**:
-- Write the goal in `goals/` if this is a repeatable workflow
-- Identify which tools need to be created/modified
-- Define args if behavior needs to be configurable
+- **Single Responsibility** -- each function does ONE thing
+- **Clear naming** -- code reads like prose
+- **Error handling** -- graceful failures, meaningful messages
+- **Type safety** -- full typing, no `any` unless justified
+- **Loose coupling** -- minimize dependencies between components
 
 **Gate**: Human approves the design before any code is written.
 
 ---
 
-### Phase 3: Validate (SRC Loop)
+### Phase 3: Validate
 
-**Objective**: Ensure the plan is structurally and semantically complete before implementation.
+**Objective**: Ensure the plan is complete before implementation begins. Catch gaps early when they are cheap to fix.
 
-**Structured Reflective Consistency (SRC) Validation**:
+**Gap Analysis Checklist**:
 
-```
-SRC ITERATION CYCLE (Max: 5, Min: 2)
-│
-├── Step 1: STRUCTURAL CHECK
-│   ├── All required components present?
-│   ├── Dependencies defined?
-│   └── Task completeness verified?
-│
-├── Step 2: SEMANTIC GAP ANALYSIS
-│   ├── Logical completeness?
-│   ├── Missing concerns? (persistence, config, error handling, auth)
-│   └── Severity: HIGH / MEDIUM / LOW
-│
-├── Step 3: FEEDBACK INJECTION
-│   ├── Generate corrective tasks for gaps
-│   ├── Update dependencies
-│   └── Recalculate estimates
-│
-└── Step 4: CONVERGENCE CHECK
-    ├── Score = (structural * 0.4) + (semantic * 0.6)
-    ├── If ≥ 95% → HALT → present for approval
-    └── If < 95% → inject feedback → continue
-```
+Review the plan against these categories. Flag any that are unaddressed:
 
-**SRC Gap Categories**:
+| Category | Questions to Ask |
+|----------|-----------------|
+| **Data persistence** | Are schema changes defined? Migration strategy? Rollback plan? |
+| **Configuration** | New env vars? New config files? Defaults documented? |
+| **Error handling** | What happens when things fail? Recovery paths defined? |
+| **Authentication/Authorization** | Who can access this? Permission checks in place? |
+| **Input validation** | What inputs are accepted? What is rejected? |
+| **Logging and observability** | How will you know if this works in production? |
+| **Performance** | Any N+1 queries? Large data sets? Pagination needed? |
+| **Caching** | Is caching needed? Invalidation strategy? |
+| **Dependencies** | New libraries? License compatibility? Security implications? |
+| **Testing strategy** | Unit tests? Integration tests? What edge cases matter? |
+| **Documentation** | API docs? User-facing docs? Architecture decision recorded? |
+| **Backwards compatibility** | Does this break existing clients or APIs? Migration path? |
 
-| Category | Checks |
-|----------|--------|
-| Structural | Missing components, undefined deps, incomplete tasks, missing I/O contracts |
-| Persistence | Database/storage not defined, migration strategy missing |
-| Configuration | Environment config absent, secrets management |
-| Error Handling | Not standardized, missing recovery paths |
-| Security | Auth/authz gaps, rate limiting, input validation |
-| Observability | Logging absent, health checks undefined, monitoring missing |
-| Caching | Strategy not considered, invalidation rules missing |
+**Scoring your plan**:
 
-**Baton-Passing Task Design** (each task must define):
-- **INPUT**: Explicit handoff artifacts from previous task
-- **OUTPUT**: Explicit deliverables for next task
-- **ACTIONS**: Atomic, completable in single session
-- **VERIFY**: Testable completion criteria
-- **HANDOFF**: Documentation file path for context transfer
+A plan is ready for implementation when:
+- All HIGH-severity gaps are addressed (data, auth, error handling)
+- MEDIUM-severity gaps have a stated approach (logging, performance, caching)
+- LOW-severity gaps are acknowledged (nice-to-haves deferred intentionally)
+
+Aim for 95%+ coverage of relevant categories before writing code. The 5 minutes spent finding a gap now saves hours of rework later.
+
+**Task Design Best Practices**:
+
+When breaking work into tasks, each task should clearly define:
+- **Input**: What artifacts or context does this task need from previous work?
+- **Output**: What does this task produce for the next task?
+- **Actions**: What specifically needs to be done? (Atomic, completable in one session)
+- **Verification**: How do you know this task is done correctly?
+- **Handoff notes**: What does the next person (or AI session) need to know?
+
+This is especially important for AI-assisted work where context can be lost between sessions.
 
 **Gate**: Human approves the validated plan before implementation begins.
 
@@ -302,40 +217,32 @@ SRC ITERATION CYCLE (Max: 5, Min: 2)
 
 ### Phase 4: Implement
 
-**Objective**: Craft the solution — don't just code it.
-
-**The Craftsmanship Standard**:
-- Every function name should sing
-- Every abstraction should feel natural
-- Every edge case handled with grace
-- First version is never good enough
+**Objective**: Build the solution with craftsmanship -- not just working code, but code you are proud of.
 
 **Implementation Workflow**:
 ```
-1. Read existing code thoroughly (Read before Write — always)
-2. Check goals/ for process guidance
-3. Check tools/manifest.md for existing capabilities
-4. Load args/ for current behavior settings
-5. Reference context/ for domain knowledge
-6. Write code following design from Phase 2
-7. Run lint/typecheck continuously
-8. Write tests alongside code (TDD when possible)
-9. If creating a new tool → add to tools/manifest.md
-10. If learning new constraints → update the relevant goal
+1. Read existing code thoroughly (always read before writing)
+2. Check project docs for conventions (CLAUDE.md, style guides)
+3. Search for existing utilities before creating new ones
+4. Write code following the design from Phase 2
+5. Run lint/typecheck continuously as you work
+6. Write tests alongside code (TDD when possible)
+7. Keep changes focused -- only modify what the plan specifies
 ```
 
-**GOTCHA Rules During Implementation**:
-- Never execute work the orchestrator should delegate to tools
-- If a tool exists, use it. If you create one, add it to the manifest
-- When tools fail: fix, test, document what you learned in the goal
-- Push reliability into deterministic code, flexibility into AI reasoning
+**Standards**:
+- Every function name should be self-documenting
+- Every abstraction should feel natural, not forced
+- Every edge case should be handled gracefully
+- Follow existing patterns in the codebase -- consistency over personal preference
 
-**Anti-Patterns**:
+**Anti-Patterns to Avoid**:
 - Writing code without reading existing patterns first
-- Skipping the manifest check
 - Over-engineering (adding features nobody asked for)
 - Suppressing errors silently
 - Using `any` types without justification
+- Creating duplicate utilities that already exist in the codebase
+- Making changes outside the scope of the plan
 
 **Gate**: Human reviews the implementation before testing.
 
@@ -343,35 +250,38 @@ SRC ITERATION CYCLE (Max: 5, Min: 2)
 
 ### Phase 5: Test
 
-**Objective**: Prove it works. Evidence, not assumptions.
+**Objective**: Prove it works with evidence, not assumptions.
 
 **Testing Pyramid**:
 ```
-         ┌─────────┐
-         │  E2E    │  Few, critical paths only
-         │ Tests   │
-        ┌┴─────────┴┐
-        │Integration │  Module interactions
-        │  Tests     │
-       ┌┴────────────┴┐
-       │  Unit Tests   │  Every function, every edge case
-       └───────────────┘
+         +----------+
+         |   E2E    |  Few, critical paths only
+         |  Tests   |
+        ++---------++
+        |Integration |  Module interactions
+        |  Tests     |
+       ++------------++
+       |  Unit Tests   |  Every function, every edge case
+       +---------------+
 ```
 
 **Quality Gates (All Must Pass)**:
-1. Syntax validation — no parse errors
-2. Type checking — full type safety
-3. Lint — code quality standards
-4. Security — no OWASP top 10 violations
-5. Unit tests — ≥80% coverage on changed code
-6. Integration tests — module interactions verified
-7. Performance — within budget (API <200ms, frontend <3s on 3G)
-8. Documentation — public APIs documented
 
-**Evidence Collection**:
+| # | Gate | What It Checks | Failure Action |
+|---|------|----------------|----------------|
+| 1 | Syntax | No parse errors | Fix immediately |
+| 2 | Types | Full type safety | Fix before proceeding |
+| 3 | Lint | Code quality standards | Fix or justify exception |
+| 4 | Security | No OWASP top 10 violations | Block until resolved |
+| 5 | Unit tests | Functions work correctly in isolation | Fix code or update test |
+| 6 | Integration | Modules work together correctly | Investigate interaction |
+| 7 | Performance | Within budget (API <200ms, UI <3s on 3G) | Profile and optimize |
+| 8 | Documentation | Public APIs documented | Document before merge |
+
+**Evidence to Collect**:
 - Test results with pass/fail counts
-- Coverage reports
-- Performance measurements
+- Coverage reports for changed code
+- Performance measurements for affected endpoints
 - Screenshots for UI changes
 
 **Gate**: All quality gates pass before proceeding.
@@ -380,7 +290,7 @@ SRC ITERATION CYCLE (Max: 5, Min: 2)
 
 ### Phase 6: Iterate
 
-**Objective**: Refine until it's not just working, but insanely great.
+**Objective**: Refine until it is not just working, but right.
 
 **Iteration Protocol**:
 ```
@@ -388,7 +298,7 @@ SRC ITERATION CYCLE (Max: 5, Min: 2)
 2. Compare with design from Phase 2
 3. Measure against quality budgets
 4. Identify rough edges
-5. Simplify ruthlessly — remove complexity without losing power
+5. Simplify -- remove complexity without losing power
 6. Re-run tests after each refinement
 7. Get human judgment: "good enough" or "keep going"
 ```
@@ -406,17 +316,15 @@ SRC ITERATION CYCLE (Max: 5, Min: 2)
 
 ### Phase 7: Commit
 
-**Objective**: Version control with meaningful history.
+**Objective**: Create version control history that tells a meaningful story.
 
 **Commit Protocol**:
 ```
 1. Review all changes (git diff)
 2. Stage specific files (never git add -A blindly)
 3. Write commit message that explains WHY, not just WHAT
-4. Never auto-commit — always get explicit approval
-5. Update context/ with session decisions if significant
-6. Update goals/ if process knowledge was gained
-7. Update tools/manifest.md if new tools were created
+4. Get explicit approval before committing
+5. Update project docs if significant decisions were made
 ```
 
 **Commit Message Format**:
@@ -425,94 +333,86 @@ SRC ITERATION CYCLE (Max: 5, Min: 2)
 
 <body: what changed and why it matters>
 
-Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+Co-Authored-By: <AI tool used> <email>
 ```
 
-**Gate**: Human approves the commit before it's created.
+**Gate**: Human approves the commit before it is created.
 
 ---
 
-## 5. System Architecture
+## 4. Separating AI from Deterministic Work
 
-### How the Layers Interact
+The most critical design decision in AI-assisted development is knowing what AI should reason about versus what tools should execute deterministically.
 
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                          HUMAN                                       │
-│                     (Approval Gates)                                 │
-│                          │                                           │
-│                          ▼                                           │
-│  ┌───────────────────────────────────────────────────────────────┐  │
-│  │                    ORCHESTRATION LAYER                         │  │
-│  │                    (AI Manager / Claude)                       │  │
-│  │                                                                │  │
-│  │  Reads goals → Applies args → References context →            │  │
-│  │  Uses hardprompts → Delegates to tools → Reports results      │  │
-│  │                                                                │  │
-│  │  ┌─────────────┐  ┌──────────┐  ┌───────────────────────┐    │  │
-│  │  │ SuperClaude │  │ Bharath  │  │ Domain Personas       │    │  │
-│  │  │ Framework   │  │ Persona  │  │ (architect, frontend, │    │  │
-│  │  │ (behaviors) │  │ (base)   │  │  security, etc.)      │    │  │
-│  │  └─────────────┘  └──────────┘  └───────────────────────┘    │  │
-│  └───────┬──────────────┬──────────────┬──────────────┬──────────┘  │
-│          │              │              │              │              │
-│          ▼              ▼              ▼              ▼              │
-│  ┌────────────┐  ┌──────────┐  ┌───────────┐  ┌──────────────┐    │
-│  │   goals/   │  │  tools/  │  │ context/  │  │ hardprompts/ │    │
-│  │            │  │          │  │           │  │              │    │
-│  │  Process   │  │ Scripts  │  │ Domain    │  │ Instruction  │    │
-│  │  definitions│ │ & utils  │  │ knowledge │  │ templates    │    │
-│  └────────────┘  └──────────┘  └───────────┘  └──────────────┘    │
-│                                                                      │
-│                        ┌──────────┐                                  │
-│                        │  args/   │                                  │
-│                        │          │                                  │
-│                        │ Behavior │                                  │
-│                        │ settings │                                  │
-│                        └──────────┘                                  │
-│                                                                      │
-│  ┌───────────────────────────────────────────────────────────────┐  │
-│  │                     MEMORY LAYER                               │  │
-│  │                                                                │  │
-│  │  context/       Session state, code analysis, decisions       │  │
-│  │  docs/          Architecture, specs, checklists               │  │
-│  │  CLAUDE.md      Project-level persistent instructions         │  │
-│  └───────────────────────────────────────────────────────────────┘  │
-│                                                                      │
-└─────────────────────────────────────────────────────────────────────┘
-```
-
-### Deterministic vs Probabilistic Boundary
-
-The most critical design decision in AI-enabled development:
+### The Boundary
 
 ```
-┌──────────────────────────┐     ┌──────────────────────────┐
-│    PROBABILISTIC          │     │    DETERMINISTIC          │
-│    (AI Orchestrator)      │     │    (Tools & Scripts)      │
-│                           │     │                           │
-│  - Reasoning about code   │     │  - AST parsing            │
-│  - Architecture decisions │     │  - Database migrations     │
-│  - Code review            │     │  - Test execution          │
-│  - Natural language        │     │  - Linting                │
-│  - Judgment calls         │     │  - File operations         │
-│  - Creative solutions     │     │  - API calls               │
-│  - Error diagnosis        │     │  - Build pipelines         │
-│  - User interaction       │     │  - Data transformations    │
-│                           │     │                           │
-│  FLEXIBILITY matters      │     │  RELIABILITY matters       │
-│  Approximate is OK        │     │  Exact is required         │
-└──────────────────────────┘     └──────────────────────────┘
-                │                              │
-                └──────────┬───────────────────┘
-                           │
-                    APPROVAL GATES
-                    (Human judgment)
-                           │
-                    The bridge between
-                    "probably right" and
-                    "definitely right"
+PROBABILISTIC (AI)                    DETERMINISTIC (Tools & Scripts)
+
+- Reasoning about code                - Parsing and AST analysis
+- Architecture decisions               - Database migrations
+- Code review and analysis             - Test execution
+- Natural language understanding       - Linting and formatting
+- Judgment calls                       - File operations
+- Creative solutions                   - API calls
+- Error diagnosis                      - Build pipelines
+- User interaction                     - Data transformations
+
+FLEXIBILITY matters                    RELIABILITY matters
+Approximate is OK                      Exact is required
 ```
+
+### The Bridge: Human Approval Gates
+
+```
+AI proposes  -->  Human reviews  -->  Tools execute
+  (draft)          (approve)           (reliable)
+```
+
+This pattern keeps AI in the "reasoning" lane and tools in the "execution" lane, with humans as the quality bridge between them.
+
+### Practical Examples
+
+| Task | AI Does | Tools/Scripts Do | Human Does |
+|------|---------|-----------------|------------|
+| Add a feature | Design the approach, write the code | Run tests, lint, type-check | Review design and code |
+| Fix a bug | Analyze root cause, propose fix | Run regression tests | Approve the diagnosis |
+| Refactor code | Identify patterns, suggest improvements | Run before/after benchmarks | Decide what to refactor |
+| Write tests | Generate test cases and assertions | Execute tests, measure coverage | Verify tests are meaningful |
+| Update deps | Assess compatibility, suggest changes | Run security scans, build checks | Approve version bumps |
+
+---
+
+## 5. Quality Gates
+
+### Approval Gates (Non-Negotiable)
+
+These are human checkpoints. AI proposes, human approves:
+
+| Gate | When | What is Presented | Required Response |
+|------|------|-------------------|-------------------|
+| Analysis | After Phase 1 | Problem statement + RCA (bugs) or Feature Analysis (new) | "yes" to proceed |
+| Design | After Phase 2 | Module design + interface contracts | "yes" to proceed |
+| Plan | After Phase 3 | Validated plan with gap analysis | "yes" to proceed |
+| Implementation | After Phase 4 | Working code + evidence | "yes" to proceed |
+| Release | After Phase 6 | Final refined state | "yes" to release |
+| Commit | Phase 7 | Diff + commit message | "yes" to commit |
+
+### When to Skip Gates
+
+Gates can be skipped ONLY when the human explicitly says:
+- "Just do it" or "skip the analysis"
+- Simple, low-risk changes the human explicitly requested
+- Documentation-only changes
+- The human has already approved the approach in the current session
+
+### Why Gates Matter
+
+Without gates, AI-assisted development degrades into "AI writes, human rubber-stamps." The gates force:
+- **Shared understanding** -- human and AI agree on the problem before solving it
+- **Intentional design** -- architecture is deliberate, not accidental
+- **Caught gaps** -- plan validation finds missing pieces before code is written
+- **Code ownership** -- the human who approves owns the result
 
 ---
 
@@ -521,155 +421,129 @@ The most critical design decision in AI-enabled development:
 ### Protocol 1: Before Starting Any Task
 
 ```
-1. Check goals/manifest.md — does a goal exist for this?
-2. Check tools/manifest.md — do tools exist for this?
-3. Load context/ — what do we already know?
-4. Read args/ — what behavior settings apply?
-5. Read CLAUDE.md — any project-specific rules?
-6. THEN begin Phase 1 (Analyze)
+1. Read project documentation (CLAUDE.md, README, architecture docs)
+2. Understand existing patterns in the codebase
+3. Check if similar work has been done before
+4. Understand the current state of the branch and any in-flight work
+5. THEN begin Phase 1 (Analyze)
 ```
 
-### Protocol 2: When Tools Fail
+### Protocol 2: When Something Fails
 
 ```
 1. Read the error and stack trace carefully
 2. Identify root cause (not symptoms)
-3. Fix the tool to handle the issue
-4. Test until it works reliably
-5. Update the relevant goal with new knowledge
-6. Next time → automatic success
+3. Fix the underlying issue
+4. Add a test that would have caught it
+5. Document the lesson if it is a recurring pattern
+6. Next time -> automatic prevention
 ```
 
 ### Protocol 3: When Stuck
 
 ```
-1. Explain what's missing
-2. Explain what you need
-3. Do NOT guess or invent capabilities
-4. Do NOT brute-force retry the same approach
+1. Explain clearly what is blocking you
+2. Explain what you need to proceed
+3. Do NOT guess or make up information
+4. Do NOT retry the same failed approach repeatedly
 5. Consider alternative approaches
 6. Ask the human for guidance
 ```
 
-### Protocol 4: When Creating New Artifacts
+### Protocol 4: Context Preservation
 
 ```
-New Tool → Add to tools/manifest.md
-New Goal → Add to goals/manifest.md
-New Pattern → Update relevant context/
-New Constraint → Update relevant goal
-Schema Change → Requires explicit approval
-```
-
-### Protocol 5: Context Preservation
-
-```
-Significant decision made → Document in context/
-Session ending → Save state to context/
-Architecture choice → Document in docs/
-Learned constraint → Update the goal
-Bug pattern found → Add to guardrails
+Important decision made        -> Document in project docs
+Session ending                 -> Note any in-progress state
+Architecture choice            -> Record in architecture docs or ADRs
+Learned a constraint           -> Update project conventions
+Found a recurring bug pattern  -> Add to test suite or CI gate
 ```
 
 ---
 
-## 7. Quality Gates
+## 7. Plan Validation
 
-### The 8-Step Validation Cycle
+### Why Validate Plans Before Implementation
 
-Every change passes through these gates before it's considered complete:
+The cheapest time to find a gap is before you write code. A missing database migration discovered during code review costs 10x more than one caught during planning.
 
-| Step | Gate | What It Checks | Failure Action |
-|------|------|-----------------|----------------|
-| 1 | Syntax | Parses without errors | Fix immediately |
-| 2 | Types | Full type safety, no implicit `any` | Fix before proceeding |
-| 3 | Lint | Code quality standards met | Fix or justify exception |
-| 4 | Security | No OWASP violations, no secrets in code | Block until resolved |
-| 5 | Unit Tests | Functions work correctly in isolation | Fix code or update test |
-| 6 | Integration | Modules work together correctly | Investigate interaction |
-| 7 | Performance | Within budget (API <200ms, UI <3s) | Profile and optimize |
-| 8 | Documentation | Public APIs documented, decisions recorded | Document before merge |
+### The Validation Process
 
-### Approval Gates (Non-Negotiable)
+```
+Step 1: STRUCTURAL CHECK
+  - Are all required components listed?
+  - Are dependencies between tasks defined?
+  - Is each task specific enough to act on?
 
-These are human checkpoints. AI proposes, human approves:
+Step 2: GAP ANALYSIS
+  - Walk through the gap categories from Phase 3
+  - Assign severity: HIGH (blocks release) / MEDIUM (should address) / LOW (nice-to-have)
+  - Flag any HIGH gaps that are unaddressed
 
-| Gate | When | What's Presented | Required Response |
-|------|------|-------------------|-------------------|
-| Analysis | After Phase 1 | Problem statement + RCA (bugs) or Feature Analysis (new) | "yes" to proceed |
-| Design | After Phase 2 | Module design + interface contracts | "yes" to proceed |
-| Plan | After Phase 3 | SRC-validated plan with ≥95% convergence | "yes" to proceed |
-| Implementation | After Phase 4 | Working code + evidence | "yes" to proceed |
-| Release | After Phase 6 | Final refined state | "yes" to release |
-| Commit | Phase 7 | Diff + commit message | "yes" to commit |
+Step 3: FILL THE GAPS
+  - Add tasks for each HIGH gap
+  - Update dependencies between tasks
+  - Re-estimate if scope changed significantly
 
-### When to Skip Gates
+Step 4: READINESS CHECK
+  - Are all HIGH gaps addressed?
+  - Does the plan cover the happy path AND error paths?
+  - Can each task be completed and verified independently?
+  - If yes -> present for approval
+  - If no -> repeat from Step 2
+```
 
-Gates can be skipped ONLY when the human explicitly says:
-- "just do it" or "skip RCA"
-- Simple refactors the human explicitly requested
-- Documentation-only changes
-- The human has already approved the approach in this session
+### Common Gaps Teams Miss
+
+| Gap | How It Surfaces | Prevention |
+|-----|----------------|------------|
+| No rollback plan | Feature breaks production, no way to undo | Always define rollback in the plan |
+| Missing error handling | Users see stack traces instead of error messages | Check every external call for failure handling |
+| No migration strategy | Database changes break existing data | Plan data migration alongside schema changes |
+| Missing auth checks | Endpoint is publicly accessible | Review every new endpoint for auth requirements |
+| No logging | Cannot debug production issues | Add structured logging for new features |
+| Forgotten edge cases | Null inputs, empty lists, concurrent access | Walk through edge cases during plan review |
 
 ---
 
-## 8. Memory & Learning
+## 8. Memory and Learning
 
 ### The Continuous Improvement Loop
 
 ```
-Every failure strengthens the system:
+Every failure strengthens the process:
 
   1. Identify what broke and why
-  2. Fix the tool script (deterministic layer)
-  3. Test until it works reliably
-  4. Update the goal with new knowledge (process layer)
-  5. Update context if domain understanding changed
-  6. Next time → automatic success
+  2. Fix the immediate issue
+  3. Add a test or CI gate that would have caught it
+  4. Document the lesson in project conventions
+  5. Next time -> automatic prevention
 
-This is NOT optional. Every failure that isn't documented is a failure repeated.
+This is NOT optional. Every failure that is not documented is a failure repeated.
 ```
 
-### Memory Architecture
+### Where Knowledge Lives
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                     MEMORY LAYERS                            │
-├─────────────────────────────────────────────────────────────┤
-│                                                              │
-│  Layer 1: CLAUDE.md (Always Loaded)                         │
-│  ├── Project rules, architecture, gotchas                   │
-│  └── Persistent across ALL sessions                         │
-│                                                              │
-│  Layer 2: context/ (Session State)                          │
-│  ├── Current task, files modified, decisions made            │
-│  └── Preserved across compactions within session             │
-│                                                              │
-│  Layer 3: docs/ (Long-Term Knowledge)                       │
-│  ├── Architecture decisions, specs, checklists               │
-│  └── Permanent project documentation                         │
-│                                                              │
-│  Layer 4: goals/ (Process Knowledge)                        │
-│  ├── How to do things, what was learned                      │
-│  └── Updated when better approaches emerge                   │
-│                                                              │
-│  Layer 5: Git History (Immutable Record)                    │
-│  ├── What changed, when, why                                 │
-│  └── The authoritative source of truth                       │
-│                                                              │
-└─────────────────────────────────────────────────────────────┘
-```
+| Layer | What It Contains | Persistence |
+|-------|-----------------|-------------|
+| **Project docs** (CLAUDE.md, README) | Architecture, conventions, gotchas | Permanent -- always loaded |
+| **Architecture Decision Records** | Why past decisions were made | Permanent -- referenced when revisiting decisions |
+| **Test suite** | Encoded behavior expectations | Permanent -- enforced on every change |
+| **CI/CD configuration** | Quality gates and automation | Permanent -- enforced on every PR |
+| **Git history** | What changed, when, why | Immutable -- the authoritative record |
+| **Session context** | Current task, in-progress decisions | Ephemeral -- relevant to current session only |
 
-### What to Remember vs What to Discard
+### What to Persist vs Discard
 
-| Remember (Persist) | Discard (Ephemeral) |
+| Persist (Long-Term Value) | Discard (Ephemeral) |
 |---|---|
 | Architecture decisions and WHY | Raw debug output |
 | API constraints discovered | Intermediate scratch work |
-| Patterns that work | Failed experiment details (keep summary) |
+| Patterns that work in this codebase | Failed experiment details (keep summary only) |
 | Gotchas and edge cases | Temporary file contents |
-| User preferences | Session-specific state after completion |
-| Tool improvements | Verbose logs |
+| User/team preferences | Session-specific state after completion |
+| Tool/CI improvements | Verbose logs |
 
 ---
 
@@ -680,135 +554,93 @@ This is NOT optional. Every failure that isn't documented is a failure repeated.
 | Type | Example | Recovery |
 |------|---------|----------|
 | Syntax | Parse error, missing import | Fix immediately, re-run |
-| Runtime | Null reference, type mismatch | RCA, fix root cause |
+| Runtime | Null reference, type mismatch | Root cause analysis, fix root cause |
 | Logic | Wrong algorithm, bad conditional | Trace data flow, fix logic |
 | Integration | API change, dependency issue | Check compatibility, update |
 | Performance | Timeout, memory issue | Profile, optimize critical path |
-| Process | Wrong approach, missing context | Re-enter Phase 1 (Analyze) |
+| Process | Wrong approach, missing context | Go back to Phase 1 (Analyze) |
 
 ### Blast Radius Assessment
 
 Before fixing anything, assess impact:
 
 ```
-1. What other features could be affected?
+1. What other features could be affected by this change?
 2. Are there shared utilities involved?
-3. What's the dependency chain?
+3. What is the dependency chain?
 4. Could the fix introduce new issues?
 5. Is this a symptom or the root cause?
 ```
 
 ### Change Size Classification
 
-| Size | Scope | Backup Strategy |
-|------|-------|-----------------|
-| Small | <10 lines, single function | Comment old code with reason |
-| Medium | Multiple functions, <50 lines | Git branch before changes |
-| Large | Multiple files, >50 lines | Full design cycle (Phases 1-3) |
+| Size | Scope | Approach |
+|------|-------|----------|
+| Small | <10 lines, single function | Fix directly, run affected tests |
+| Medium | Multiple functions, <50 lines | Create a branch, run full test suite |
+| Large | Multiple files, >50 lines | Full lifecycle (Phases 1-3 before coding) |
 
 ---
 
-## 10. File Structure
-
-### Where Things Live
-
-```
-project-root/
-│
-├── CLAUDE.md              # Project rules (always loaded by AI)
-│
-├── goals/                 # Process Layer
-│   ├── manifest.md        # Index of all goal workflows
-│   └── *.md               # Individual goal definitions
-│
-├── tools/                 # Execution Layer
-│   ├── manifest.md        # Master list of tools
-│   └── <workflow>/        # Scripts organized by domain
-│
-├── args/                  # Behavior Layer
-│   └── *.yaml             # Current behavior settings
-│
-├── context/               # Context Layer
-│   ├── context.md         # Session state
-│   └── *.md               # Domain knowledge artifacts
-│
-├── hardprompts/           # Instruction Templates
-│   └── *.md               # Reusable LLM instruction templates
-│
-├── docs/                  # Long-Term Knowledge
-│   ├── architecture.md    # System architecture
-│   └── *.md               # Specs, checklists, guides
-│
-├── config/                # Application Configuration
-│   └── codeloom.yaml      # Unified app config
-│
-├── codeloom/              # Application Code
-│   ├── api/               # FastAPI routes and middleware
-│   ├── core/              # Business logic and services
-│   └── tests/             # Test suites
-│
-└── frontend/              # React SPA
-    └── src/               # Components, pages, services
-```
-
-### Manifest Files
-
-Every layer with multiple files has a manifest:
-- `goals/manifest.md` — Index of all goal workflows with one-sentence descriptions
-- `tools/manifest.md` — Master list of all tools with one-sentence descriptions
-
-**Rule**: If you create a new goal or tool, you MUST add it to the manifest.
-
----
-
-## 11. Quick Reference
+## 10. Quick Reference
 
 ### The Lifecycle in One Sentence
 
-> Analyze deeply, design elegantly, validate rigorously, implement craftfully, test thoroughly, iterate relentlessly, commit intentionally — and learn from everything.
+> Analyze deeply, design clearly, validate thoroughly, implement carefully, test rigorously, iterate until right, commit intentionally -- and learn from everything.
 
 ### Do
 
-- Read before Write (always)
-- Check manifests before creating new artifacts
-- Present RCA before fixing bugs
+- Read existing code before writing new code (always)
+- Search the codebase before creating new utilities
+- Present analysis before fixing bugs
 - Get approval before implementing designs
-- Push reliability into tools, flexibility into AI
-- Document what you learn
-- Simplify ruthlessly
+- Run tests after every change
+- Document decisions that future developers will need
+- Simplify when possible
 
 ### Don't
 
-- Write code without reading existing patterns
+- Write code without understanding existing patterns
 - Skip approval gates
 - Auto-commit without permission
 - Guess when you can verify
-- Brute-force retry failed approaches
-- Over-engineer or add unrequested features
+- Retry failed approaches without changing strategy
+- Add features nobody asked for
 - Suppress errors silently
 
-### The GOTCHA Checklist (Before Every Task)
+### Decision: Which Phases Do I Need?
 
-- [ ] Goal exists? Check `goals/manifest.md`
-- [ ] Tool exists? Check `tools/manifest.md`
-- [ ] Context loaded? Read `context/`
-- [ ] Args applied? Check `args/`
-- [ ] CLAUDE.md read? Check project rules
-- [ ] Approval gate clear? Human said "yes"
+```
+Is this a trivial fix (typo, formatting)?
+  YES -> Phase 4 (implement) + Phase 7 (commit)
+  NO  |
+      v
+Is the root cause clear and the fix obvious?
+  YES -> Phase 1 (brief analysis) + Phase 4 + Phase 5 + Phase 7
+  NO  |
+      v
+Does this require design decisions?
+  YES -> Phase 1 + Phase 2 + Phase 4 + Phase 5 + Phase 7
+  NO  |
+      v
+Is this high-risk (many files, architectural, data migrations)?
+  YES -> All 7 phases (full lifecycle)
+```
 
 ### Your Job in One Sentence
 
-You sit between what needs to happen (goals) and getting it done (tools). Read instructions, apply args, use context, delegate well, handle failures, strengthen the system with each run, and never settle for "works" when "insanely great" is possible.
+AI assists with reasoning and code generation; tools handle deterministic execution; humans make judgment calls and approve results. The lifecycle ensures nothing falls through the cracks.
 
 ---
 
 ## See Also
 
-- [Module 16: HTC AI-Assisted Development POV](/modules/htc-ai-dev-pov) — The strategic POV introducing the 7-phase lifecycle that this module fully operationalizes.
-- [Module 14: AI + Manual Hybrid Workflow](/modules/ai-hybrid-workflow) — Daily workflow patterns that implement lifecycle phases at the sprint level.
+- [Module 11: AI-Assisted Dev Best Practices](/modules/ai-dev-best-practices) -- Team-level policies, CI/CD gates, and governance that complement this lifecycle.
+- [Module 14: AI + Manual Hybrid Workflow](/modules/ai-hybrid-workflow) -- Daily sprint-level workflow patterns that implement these lifecycle phases.
+- [Module 16: HTC AI-Assisted Development POV](/modules/htc-ai-dev-pov) -- Strategic overview of the AI-enabled development vision.
 
 ---
 
-*This document is the synthesis of the GOTCHA Framework (system structure) and the SuperClaude Bharath Persona (behavioral model). It defines how AI-enabled development operates in this project.*
+*This framework is a starting point, not a rigid process. Adapt it to your team's needs, and update it as you learn what works.*
 
-*Last updated: 2026-02-19*
+*Last updated: 2026-03-07*
