@@ -90,10 +90,10 @@ npm install express-rate-limit
 The model references an API that existed in an older version but has been removed.
 
 ```javascript
-// Hallucinated: componentWillMount was removed in React 18+
+// Hallucinated: componentWillMount was deprecated in React 16.3 and removed in React 19
 class MyComponent extends React.Component {
   componentWillMount() {
-    // This lifecycle method was removed in React 18 (current is React 19)
+    // This lifecycle method was removed in React 19
   }
 }
 

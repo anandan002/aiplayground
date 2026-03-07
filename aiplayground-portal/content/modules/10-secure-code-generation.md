@@ -446,8 +446,8 @@ npm info <package-name> --json | jq '.dist-tags, .time.created'
 # 3. Check for known vulnerabilities
 npm audit --json
 
-# 4. Check the package's security track record
-npx is-website-vulnerable <package-name>
+# 4. Check for vulnerabilities with Snyk (optional)
+npx snyk test
 
 # 5. Review the package's GitHub repository
 # - How many stars/contributors?
