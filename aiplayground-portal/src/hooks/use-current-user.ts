@@ -8,6 +8,7 @@ export function useCurrentUser() {
   return {
     user: session?.user,
     isAdmin: session?.user?.role === "ADMIN",
+    isGuest: session?.user?.role === "GUEST",
     isLoading: status === "loading",
   }
 }

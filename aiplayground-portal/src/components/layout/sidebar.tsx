@@ -55,7 +55,7 @@ function NavContent({ userRole, pathname }: { userRole: string; pathname: string
         <span className="text-lg font-bold tracking-tight">AIPlayground</span>
       </div>
       <nav className="flex-1 px-3 py-4 space-y-1">
-        {mainNavItems.map((item) => {
+        {(userRole === "GUEST" ? mainNavItems.filter((i) => i.href === "/modules") : mainNavItems).map((item) => {
           const isActive =
             item.href === "/modules"
               ? pathname.startsWith("/modules")
