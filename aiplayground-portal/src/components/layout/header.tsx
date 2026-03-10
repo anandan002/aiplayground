@@ -12,7 +12,9 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
-import { LogOut } from "lucide-react"
+import { KeyRound, LogOut } from "lucide-react"
+import { useState } from "react"
+import { ChangePasswordDialog } from "@/components/auth/change-password-dialog"
 
 interface HeaderProps {
   userName: string
@@ -46,6 +48,7 @@ function getInitials(name: string): string {
 export function Header({ userName, userEmail, userRole }: HeaderProps) {
   const pathname = usePathname()
   const title = getPageTitle(pathname)
+  const [showChangePassword, setShowChangePassword] = useState(false)
 
   return (
     <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-sm border-b">
@@ -79,6 +82,14 @@ export function Header({ userName, userEmail, userRole }: HeaderProps) {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem
+              onClick={() => setShowChangePassword(true)}
+              className="cursor-pointer"
+            >
+              <KeyRound className="mr-2 h-4 w-4" />
+              Change Password
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
               onClick={() => signOut({ callbackUrl: "/login" })}
               className="cursor-pointer text-red-600 focus:text-red-600"
             >
@@ -88,6 +99,10 @@ export function Header({ userName, userEmail, userRole }: HeaderProps) {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+      <ChangePasswordDialog
+        open={showChangePassword}
+        onOpenChange={setShowChangePassword}
+      />
     </header>
   )
 }

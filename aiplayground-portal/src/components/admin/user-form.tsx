@@ -175,6 +175,7 @@ export function UserForm({ open, onOpenChange, user, onSuccess }: UserFormProps)
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="MEMBER">Member</SelectItem>
+                <SelectItem value="GUEST">Guest</SelectItem>
                 <SelectItem value="ADMIN">Admin</SelectItem>
               </SelectContent>
             </Select>

@@ -25,6 +25,15 @@ export default auth((req) => {
     }
   }
 
+  // Guest users can only access modules
+  if (req.auth?.user?.role === "GUEST") {
+    const allowed =
+      pathname.startsWith("/modules") || pathname.startsWith("/api/modules")
+    if (!allowed) {
+      return NextResponse.redirect(new URL("/modules", req.url))
+    }
+  }
+
   return NextResponse.next()
 })
 

@@ -84,7 +84,7 @@ export default async function ModuleDetailPage({
         )}
       </Tabs>
 
-      <div className="sticky bottom-6">
+      <div className="pt-4 pb-6">
         <ProgressButton
           slug={moduleData.slug}
           initialCompleted={isCompleted}
