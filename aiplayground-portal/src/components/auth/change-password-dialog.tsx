@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useToast } from "@/hooks/use-toast"
 import { Loader2 } from "lucide-react"
+import { withBasePath } from "@/lib/paths"
 
 interface ChangePasswordDialogProps {
   open: boolean
@@ -46,7 +47,7 @@ export function ChangePasswordDialog({
 
     setIsLoading(true)
     try {
-      const res = await fetch("/api/user/password", {
+      const res = await fetch(withBasePath("/api/user/password"), {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ currentPassword, newPassword }),
