@@ -1,5 +1,5 @@
 import { auth } from "@/lib/auth"
-import { stripBasePath } from "@/lib/paths"
+import { stripBasePath, withBasePath } from "@/lib/paths"
 import { NextResponse } from "next/server"
 
 export default auth((req) => {
@@ -17,20 +17,20 @@ export default auth((req) => {
   // Public routes
   if (pathname === "/login" || pathname.startsWith("/api/auth")) {
     if (isLoggedIn && pathname === "/login") {
-      return NextResponse.redirect(new URL("/dashboard", req.url))
+      return NextResponse.redirect(new URL(withBasePath("/dashboard"), req.url))
     }
     return NextResponse.next()
   }
 
   // Require auth for everything else
   if (!isLoggedIn) {
-    return NextResponse.redirect(new URL("/login", req.url))
+    return NextResponse.redirect(new URL(withBasePath("/login"), req.url))
   }
 
   // Admin routes require ADMIN role
   if (pathname.startsWith("/admin") || pathname.startsWith("/api/admin")) {
     if (req.auth?.user?.role !== "ADMIN") {
-      return NextResponse.redirect(new URL("/dashboard", req.url))
+      return NextResponse.redirect(new URL(withBasePath("/dashboard"), req.url))
     }
   }
 
@@ -39,7 +39,7 @@ export default auth((req) => {
     const allowed =
       pathname.startsWith("/modules") || pathname.startsWith("/api/modules")
     if (!allowed) {
-      return NextResponse.redirect(new URL("/modules", req.url))
+      return NextResponse.redirect(new URL(withBasePath("/modules"), req.url))
     }
   }
 
